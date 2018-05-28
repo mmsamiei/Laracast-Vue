@@ -2,17 +2,23 @@
     <div>
         <h2> simple Ayah Component </h2>
         <button @click="setRandomAyah"> Random Ayah </button>
-        <p>{{ayahText}}</p>
+        <Box>
+          <div slot="title">{{surah}}</div>
+          <div slot="body">{{ayahText}}</div>
+        </Box>
     </div>
 </template>
 
 <script>
 import axios from "axios";
+import Box from "./Box.vue";
 export default {
   name: "Ayah",
+  components: { Box },
   data() {
     return {
-      ayahText: ""
+      ayahText: "",
+      surah: ""
     };
   },
   mounted() {
@@ -21,8 +27,8 @@ export default {
     axios
       .get("http://api.alquran.cloud/ayah/" + randomAyah)
       .then(function(response) {
-        //console.log(response);
         that.ayahText = response["data"]["data"]["text"];
+        that.surah = response["data"]["data"]["surah"]["name"];
         console.log(this.ayahText);
       })
       .catch(function(error) {
@@ -33,14 +39,15 @@ export default {
     setRandomAyah() {
       let randomAyah = Math.floor(Math.random() * 6236);
       let that = this;
-      that.ayahText = 'waiting for Ayah coming';
+      that.ayahText = "waiting for Ayah";
 
       axios
         .get("http://api.alquran.cloud/ayah/" + randomAyah)
         .then(function(response) {
           //console.log(response);
           that.ayahText = response["data"]["data"]["text"];
-          console.log(this.ayahText);
+          that.surah = response["data"]["data"]["surah"]["name"];
+          console.log(that.surah);
         })
         .catch(function(error) {
           console.log(error);

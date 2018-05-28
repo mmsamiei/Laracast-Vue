@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <Ayah></Ayah>
-    <Box></Box>
   </div>
 </template>
 
